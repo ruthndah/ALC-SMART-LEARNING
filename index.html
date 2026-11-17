@@ -166,7 +166,12 @@
     <section class="card table-card">
 
         <h2>Participant Assessment</h2>
-
+<input
+    type="text"
+    id="searchInput"
+    placeholder="Search participant name..."
+    style="width:100%; max-width:360px; padding:12px; margin:10px 0; border:1px solid #d9e2ec; border-radius:8px;"
+>
         <table>
             <thead>
                 <tr>
@@ -265,7 +270,29 @@ participants.forEach(person => {
 
     table.appendChild(row);
 });
+// 6. Search participant by name
 
+const searchInput = document.getElementById("searchInput");
+
+searchInput.addEventListener("input", function() {
+
+    const keyword = searchInput.value.toLowerCase();
+
+    const rows = table.querySelectorAll("tr");
+
+    rows.forEach(row => {
+
+        const name = row.cells[0].textContent.toLowerCase();
+
+        if (name.includes(keyword)) {
+            row.style.display = "";
+        } else {
+            row.style.display = "none";
+        }
+
+    });
+
+});
 </script>
 
 </body>
