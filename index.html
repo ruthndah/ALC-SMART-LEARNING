@@ -166,6 +166,39 @@
     <section class="card table-card">
 
         <h2>Participant Assessment</h2>
+        <h3>Add New Participant</h3>
+
+<form id="participantForm">
+
+    <input
+        type="text"
+        id="newName"
+        placeholder="Participant name"
+        required
+    >
+
+    <select id="newDepartment" required>
+        <option value="">Select Department</option>
+        <option value="Biodiesel">Biodiesel</option>
+        <option value="Refinery">Refinery</option>
+        <option value="KCP">KCP</option>
+        <option value="Oleochemical">Oleochemical</option>
+    </select>
+
+    <input
+        type="number"
+        id="newScore"
+        placeholder="Score (0-100)"
+        min="0"
+        max="100"
+        required
+    >
+
+    <button type="submit">Add Participant</button>
+
+</form>
+
+
         <select
     id="departmentFilter"
     style="padding:12px; margin:10px 0; border:1px solid #d9e2ec; border-radius:8px;"
@@ -315,7 +348,76 @@ function filterParticipants() {
 searchInput.addEventListener("input", filterParticipants);
 
 departmentFilter.addEventListener("change", filterParticipants);
+// 7. Add new participant
 
+const participantForm = document.getElementById("participantForm");
+
+participantForm.addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    const name = document.getElementById("newName").value.trim();
+    const department = document.getElementById("newDepartment").value;
+    const score = Number(document.getElementById("newScore").value);
+
+    if (name === "" || department === "" || score < 0 || score > 100) {
+        alert("Please enter valid participant data.");
+        return;
+    }
+
+    const newParticipant = {
+        name: name,
+        department: department,
+        score: score
+    };
+
+    participants.push(newParticipant);
+
+    const isPassed = score >= passingScore;
+
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    `;
+
+    row.cells[0].textContent = name;
+    row.cells[1].textContent = department;
+    row.cells[2].textContent = score;
+    row.cells[3].textContent = isPassed ? "Passed" : "Need Improvement";
+
+    row.cells[3].className = isPassed
+        ? "status status-passed"
+        : "status status-improvement";
+
+    table.appendChild(row);
+
+    // Update dashboard numbers
+    const totalNow = participants.length;
+
+    const passedNow = participants.filter(
+        person => person.score >= passingScore
+    ).length;
+
+    const improvementNow = totalNow - passedNow;
+
+    const rateNow = (passedNow / totalNow) * 100;
+
+    document.getElementById("total").textContent = totalNow;
+    document.getElementById("passed").textContent = passedNow;
+    document.getElementById("improvement").textContent = improvementNow;
+    document.getElementById("rate").textContent = rateNow.toFixed(1) + "%";
+
+    participantForm.reset();
+
+    filterParticipants();
+
+    alert("Participant added successfully!");
+
+});
 </script>
 
 </body>
