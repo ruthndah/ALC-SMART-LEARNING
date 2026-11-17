@@ -239,8 +239,9 @@
 
 <script>
 
+
 // 1. Sample participant data
-const participants = [
+const sampleParticipants = [
     { name: "Andi", department: "Biodiesel", score: 85 },
     { name: "Budi", department: "Refinery", score: 75 },
     { name: "Citra", department: "KCP", score: 90 },
@@ -251,9 +252,20 @@ const participants = [
     { name: "Hana", department: "Oleochemical", score: 95 }
 ];
 
+// 2. Load saved data from browser
+let participants = JSON.parse(
+    localStorage.getItem("alcParticipants")
+) || sampleParticipants;
+
 // 2. Set passing score
 const passingScore = 80;
-
+// Save participant data to browser
+function saveParticipants() {
+    localStorage.setItem(
+        "alcParticipants",
+        JSON.stringify(participants)
+    );
+}
 // 3. Connect to participant table
 const table = document.getElementById("participantTable");
 
@@ -353,7 +365,7 @@ function renderParticipants() {
                 department: newDepartment,
                 score: newScore
             };
-
+saveParticipants();
             renderParticipants();
             updateDashboard();
             filterParticipants();
@@ -372,7 +384,7 @@ function renderParticipants() {
 
             if (confirmation) {
                 participants.splice(index, 1);
-
+saveParticipants();
                 renderParticipants();
                 updateDashboard();
                 filterParticipants();
@@ -465,7 +477,7 @@ participantForm.addEventListener("submit", function(event) {
     };
 
     participants.push(newParticipant);
-
+saveParticipants();
     // Refresh table and dashboard
     renderParticipants();
     updateDashboard();
