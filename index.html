@@ -166,6 +166,16 @@
     <section class="card table-card">
 
         <h2>Participant Assessment</h2>
+        <select
+    id="departmentFilter"
+    style="padding:12px; margin:10px 0; border:1px solid #d9e2ec; border-radius:8px;"
+>
+    <option value="">All Departments</option>
+    <option value="Biodiesel">Biodiesel</option>
+    <option value="Refinery">Refinery</option>
+    <option value="KCP">KCP</option>
+    <option value="Oleochemical">Oleochemical</option>
+</select>
 <input
     type="text"
     id="searchInput"
@@ -270,27 +280,41 @@ participants.forEach(person => {
 
     table.appendChild(row);
 });
-// 6. Search participant by name
+// 6. Search and filter participants
 
 const searchInput = document.getElementById("searchInput");
+const departmentFilter = document.getElementById("departmentFilter");
 
-searchInput.addEventListener("input", function() {
+function filterParticipants() {
 
     const keyword = searchInput.value.toLowerCase();
+    const selectedDepartment = departmentFilter.value;
 
     const rows = table.querySelectorAll("tr");
 
     rows.forEach(row => {
 
         const name = row.cells[0].textContent.toLowerCase();
+        const department = row.cells[1].textContent;
 
-        if (name.includes(keyword)) {
+        const matchesName = name.includes(keyword);
+
+        const matchesDepartment =
+            selectedDepartment === "" ||
+            department === selectedDepartment;
+
+        if (matchesName && matchesDepartment) {
             row.style.display = "";
         } else {
             row.style.display = "none";
         }
 
     });
+}
+
+searchInput.addEventListener("input", filterParticipants);
+
+departmentFilter.addEventListener("change", filterParticipants);
 
 });
 </script>
