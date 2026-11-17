@@ -18,17 +18,17 @@
             color: #24364b;
         }
 
-        .header {
+        header {
             background: #142d4e;
             color: white;
-            padding: 24px 40px;
+            padding: 25px 35px;
         }
 
-        .header h1 {
+        header h1 {
             margin: 0 0 8px;
         }
 
-        .header p {
+        header p {
             margin: 0;
             color: #cbd8e7;
         }
@@ -39,39 +39,27 @@
             padding: 0 20px;
         }
 
-        .dashboard-title {
-            margin-bottom: 22px;
-        }
-
-        .dashboard-title h2 {
-            margin-bottom: 6px;
-        }
-
-        .dashboard-title p {
-            color: #718096;
-        }
-
         .cards {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 18px;
+            gap: 15px;
         }
 
         .card {
             background: white;
             padding: 22px;
             border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
 
         .card h3 {
-            margin: 0 0 14px;
-            font-size: 14px;
             color: #718096;
+            font-size: 14px;
+            margin-top: 0;
         }
 
         .number {
-            font-size: 32px;
+            font-size: 30px;
             font-weight: bold;
             color: #18395f;
         }
@@ -84,38 +72,50 @@
             color: #c17a20;
         }
 
-        .performance {
-            margin-top: 24px;
+        .table-card {
+            margin-top: 25px;
+            overflow-x: auto;
         }
 
-        .progress {
-            background: #e5eaf0;
-            height: 12px;
-            border-radius: 20px;
-            overflow: hidden;
-            margin-top: 12px;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            min-width: 550px;
         }
 
-        .progress-bar {
-            width: 72%;
-            height: 100%;
-            background: #315d91;
+        th, td {
+            padding: 13px;
+            text-align: left;
+            border-bottom: 1px solid #e5eaf0;
+        }
+
+        th {
+            color: #718096;
+            font-size: 13px;
+        }
+
+        .status {
+            font-weight: bold;
+        }
+
+        .status-passed {
+            color: #16865b;
+        }
+
+        .status-improvement {
+            color: #c17a20;
         }
 
         .footer {
             text-align: center;
             padding: 30px;
             color: #8a98a9;
-            font-size: 12px;
         }
 
         @media (max-width: 750px) {
             .cards {
                 grid-template-columns: repeat(2, 1fr);
-            }
-
-            .header {
-                padding: 22px;
             }
         }
 
@@ -129,57 +129,144 @@
 
 <body>
 
-    <header class="header">
-        <h1>ALC Smart Learning</h1>
-        <p>Learning & Development Platform</p>
-    </header>
+<header>
+    <h1>ALC Smart Learning</h1>
+    <p>Learning & Development Platform</p>
+</header>
 
-    <main class="container">
+<main class="container">
 
-        <section class="dashboard-title">
-            <h2>Learning Dashboard</h2>
-            <p>Overview of learning and competency performance</p>
-        </section>
+    <h2>DLP Assessment Dashboard</h2>
+    <p>Learning and competency performance overview</p>
 
-        <section class="cards">
+    <section class="cards">
 
-            <div class="card">
-                <h3>Total Participants</h3>
-                <div class="number">250</div>
-            </div>
+        <div class="card">
+            <h3>Total Participants</h3>
+            <div class="number" id="total">0</div>
+        </div>
 
-            <div class="card">
-                <h3>Passed</h3>
-                <div class="number passed">180</div>
-            </div>
+        <div class="card">
+            <h3>Passed</h3>
+            <div class="number passed" id="passed">0</div>
+        </div>
 
-            <div class="card">
-                <h3>Need Improvement</h3>
-                <div class="number improvement">70</div>
-            </div>
+        <div class="card">
+            <h3>Need Improvement</h3>
+            <div class="number improvement" id="improvement">0</div>
+        </div>
 
-            <div class="card">
-                <h3>Achievement</h3>
-                <div class="number">72%</div>
-            </div>
+        <div class="card">
+            <h3>Passing Rate</h3>
+            <div class="number" id="rate">0%</div>
+        </div>
 
-        </section>
+    </section>
 
-        <section class="card performance">
-            <h2>DLP Performance</h2>
-            <p>Overall passing rate: <strong>72%</strong></p>
+    <section class="card table-card">
 
-            <div class="progress">
-                <div class="progress-bar"></div>
-            </div>
-        </section>
+        <h2>Participant Assessment</h2>
 
-    </main>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Department</th>
+                    <th>Score</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
 
-    <footer class="footer">
-        ALC Smart Learning | Learning & Development
-    </footer>
+            <tbody id="participantTable"></tbody>
+        </table>
+
+    </section>
+
+</main>
+
+<footer class="footer">
+    ALC Smart Learning | Learning & Development
+</footer>
+
+<script>
+
+// 1. Sample participant data
+const participants = [
+    { name: "Andi", department: "Biodiesel", score: 85 },
+    { name: "Budi", department: "Refinery", score: 75 },
+    { name: "Citra", department: "KCP", score: 90 },
+    { name: "Deni", department: "Oleochemical", score: 70 },
+    { name: "Eka", department: "Biodiesel", score: 88 },
+    { name: "Fajar", department: "Refinery", score: 65 },
+    { name: "Gita", department: "KCP", score: 82 },
+    { name: "Hana", department: "Oleochemical", score: 95 }
+];
+
+// 2. Set passing score
+const passingScore = 80;
+
+// 3. Calculate dashboard data
+const total = participants.length;
+
+const passed = participants.filter(
+    person => person.score >= passingScore
+).length;
+
+const improvement = total - passed;
+
+const rate = total === 0
+    ? 0
+    : (passed / total) * 100;
+
+// 4. Display dashboard numbers
+document.getElementById("total").textContent = total;
+
+document.getElementById("passed").textContent = passed;
+
+document.getElementById("improvement").textContent = improvement;
+
+document.getElementById("rate").textContent =
+    rate.toFixed(1) + "%";
+
+// 5. Display participant table
+const table = document.getElementById("participantTable");
+
+participants.forEach(person => {
+
+    const isPassed = person.score >= passingScore;
+
+    const status = isPassed
+        ? "Passed"
+        : "Need Improvement";
+
+    const statusClass = isPassed
+        ? "status-passed"
+        : "status-improvement";
+
+    const row = document.createElement("tr");
+
+    const nameCell = document.createElement("td");
+    nameCell.textContent = person.name;
+
+    const departmentCell = document.createElement("td");
+    departmentCell.textContent = person.department;
+
+    const scoreCell = document.createElement("td");
+    scoreCell.textContent = person.score;
+
+    const statusCell = document.createElement("td");
+    statusCell.textContent = status;
+    statusCell.className = "status " + statusClass;
+
+    row.appendChild(nameCell);
+    row.appendChild(departmentCell);
+    row.appendChild(scoreCell);
+    row.appendChild(statusCell);
+
+    table.appendChild(row);
+});
+
+</script>
 
 </body>
 </html>
-
