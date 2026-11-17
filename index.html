@@ -254,66 +254,145 @@ const participants = [
 // 2. Set passing score
 const passingScore = 80;
 
-// 3. Calculate dashboard data
-const total = participants.length;
-
-const passed = participants.filter(
-    person => person.score >= passingScore
-).length;
-
-const improvement = total - passed;
-
-const rate = total === 0
-    ? 0
-    : (passed / total) * 100;
-
-// 4. Display dashboard numbers
-document.getElementById("total").textContent = total;
-
-document.getElementById("passed").textContent = passed;
-
-document.getElementById("improvement").textContent = improvement;
-
-document.getElementById("rate").textContent =
-    rate.toFixed(1) + "%";
-
-// 5. Display participant table
+// 3. Connect to participant table
 const table = document.getElementById("participantTable");
 
-participants.forEach(person => {
+// 4. Update dashboard numbers
+function updateDashboard() {
+    const total = participants.length;
 
-    const isPassed = person.score >= passingScore;
+    const passed = participants.filter(
+        person => person.score >= passingScore
+    ).length;
 
-    const status = isPassed
-        ? "Passed"
-        : "Need Improvement";
+    const improvement = total - passed;
 
-    const statusClass = isPassed
-        ? "status-passed"
-        : "status-improvement";
+    const rate = total === 0 ? 0 : (passed / total) * 100;
 
-    const row = document.createElement("tr");
+    document.getElementById("total").textContent = total;
+    document.getElementById("passed").textContent = passed;
+    document.getElementById("improvement").textContent = improvement;
+    document.getElementById("rate").textContent = rate.toFixed(1) + "%";
+}
 
-    const nameCell = document.createElement("td");
-    nameCell.textContent = person.name;
+// 5. Display participant table
+function renderParticipants() {
+    table.innerHTML = "";
 
-    const departmentCell = document.createElement("td");
-    departmentCell.textContent = person.department;
+    participants.forEach((person, index) => {
+        const row = document.createElement("tr");
 
-    const scoreCell = document.createElement("td");
-    scoreCell.textContent = person.score;
+        const nameCell = document.createElement("td");
+        nameCell.textContent = person.name;
 
-    const statusCell = document.createElement("td");
-    statusCell.textContent = status;
-    statusCell.className = "status " + statusClass;
+        const departmentCell = document.createElement("td");
+        departmentCell.textContent = person.department;
 
-    row.appendChild(nameCell);
-    row.appendChild(departmentCell);
-    row.appendChild(scoreCell);
-    row.appendChild(statusCell);
+        const scoreCell = document.createElement("td");
+        scoreCell.textContent = person.score;
 
-    table.appendChild(row);
-});
+        const statusCell = document.createElement("td");
+        const isPassed = person.score >= passingScore;
+
+        statusCell.textContent = isPassed
+            ? "Passed"
+            : "Need Improvement";
+
+        statusCell.className = isPassed
+            ? "status status-passed"
+            : "status status-improvement";
+
+        // Action column
+        const actionCell = document.createElement("td");
+
+        // Edit button
+        const editButton = document.createElement("button");
+        editButton.textContent = "Edit";
+
+        editButton.addEventListener("click", function() {
+            const newName = prompt("Enter participant name:", person.name);
+
+            if (newName === null) return;
+
+            const newDepartment = prompt(
+                "Enter department (Biodiesel, Refinery, KCP, Oleochemical):",
+                person.department
+            );
+
+            if (newDepartment === null) return;
+
+            const scoreText = prompt(
+                "Enter score (0-100):",
+                String(person.score)
+            );
+
+            if (scoreText === null) return;
+
+            const newScore = Number(scoreText);
+            const allowedDepartments = [
+                "Biodiesel",
+                "Refinery",
+                "KCP",
+                "Oleochemical"
+            ];
+
+            if (
+                newName.trim() === "" ||
+                !allowedDepartments.includes(newDepartment) ||
+                scoreText.trim() === "" ||
+                !Number.isFinite(newScore) ||
+                newScore < 0 ||
+                newScore > 100
+            ) {
+                alert("Invalid data. Please try again.");
+                return;
+            }
+
+            participants[index] = {
+                name: newName.trim(),
+                department: newDepartment,
+                score: newScore
+            };
+
+            renderParticipants();
+            updateDashboard();
+            filterParticipants();
+
+            alert("Participant updated successfully!");
+        });
+
+        // Delete button
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "Delete";
+
+        deleteButton.addEventListener("click", function() {
+            const confirmation = confirm(
+                "Are you sure you want to delete " + person.name + "?"
+            );
+
+            if (confirmation) {
+                participants.splice(index, 1);
+
+                renderParticipants();
+                updateDashboard();
+                filterParticipants();
+
+                alert("Participant deleted successfully!");
+            }
+        });
+
+        actionCell.appendChild(editButton);
+        actionCell.appendChild(deleteButton);
+
+        row.appendChild(nameCell);
+        row.appendChild(departmentCell);
+        row.appendChild(scoreCell);
+        row.appendChild(statusCell);
+        row.appendChild(actionCell);
+
+        table.appendChild(row);
+    });
+}
 // 6. Search and filter participants
 
 const searchInput = document.getElementById("searchInput");
@@ -349,6 +428,11 @@ function filterParticipants() {
 searchInput.addEventListener("input", filterParticipants);
 
 departmentFilter.addEventListener("change", filterParticipants);
+    
+renderParticipants();
+updateDashboard();
+
+
 // 7. Add new participant
 
 const participantForm = document.getElementById("participantForm");
@@ -359,9 +443,17 @@ participantForm.addEventListener("submit", function(event) {
 
     const name = document.getElementById("newName").value.trim();
     const department = document.getElementById("newDepartment").value;
-    const score = Number(document.getElementById("newScore").value);
+    const scoreText = document.getElementById("newScore").value;
+    const score = Number(scoreText);
 
-    if (name === "" || department === "" || score < 0 || score > 100) {
+    if (
+        name === "" ||
+        department === "" ||
+        scoreText.trim() === "" ||
+        !Number.isFinite(score) ||
+        score < 0 ||
+        score > 100
+    ) {
         alert("Please enter valid participant data.");
         return;
     }
@@ -374,51 +466,17 @@ participantForm.addEventListener("submit", function(event) {
 
     participants.push(newParticipant);
 
-    const isPassed = score >= passingScore;
-
-    const row = document.createElement("tr");
-
-    row.innerHTML = `
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    `;
-
-    row.cells[0].textContent = name;
-    row.cells[1].textContent = department;
-    row.cells[2].textContent = score;
-    row.cells[3].textContent = isPassed ? "Passed" : "Need Improvement";
-
-    row.cells[3].className = isPassed
-        ? "status status-passed"
-        : "status status-improvement";
-
-    table.appendChild(row);
-
-    // Update dashboard numbers
-    const totalNow = participants.length;
-
-    const passedNow = participants.filter(
-        person => person.score >= passingScore
-    ).length;
-
-    const improvementNow = totalNow - passedNow;
-
-    const rateNow = (passedNow / totalNow) * 100;
-
-    document.getElementById("total").textContent = totalNow;
-    document.getElementById("passed").textContent = passedNow;
-    document.getElementById("improvement").textContent = improvementNow;
-    document.getElementById("rate").textContent = rateNow.toFixed(1) + "%";
+    // Refresh table and dashboard
+    renderParticipants();
+    updateDashboard();
+    filterParticipants();
 
     participantForm.reset();
-
-    filterParticipants();
 
     alert("Participant added successfully!");
 
 });
+
 </script>
 
 </body>
