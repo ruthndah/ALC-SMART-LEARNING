@@ -1,495 +1,139 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ALC Smart Learning</title>
-
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f3f6fa;
-            color: #24364b;
-        }
-
-        header {
-            background: #142d4e;
-            color: white;
-            padding: 25px 35px;
-        }
-
-        header h1 {
-            margin: 0 0 8px;
-        }
-
-        header p {
-            margin: 0;
-            color: #cbd8e7;
-        }
-
-        .container {
-            max-width: 1100px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
-
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-        }
-
-        .card {
-            background: white;
-            padding: 22px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-        }
-
-        .card h3 {
-            color: #718096;
-            font-size: 14px;
-            margin-top: 0;
-        }
-
-        .number {
-            font-size: 30px;
-            font-weight: bold;
-            color: #18395f;
-        }
-
-        .passed {
-            color: #16865b;
-        }
-
-        .improvement {
-            color: #c17a20;
-        }
-
-        .table-card {
-            margin-top: 25px;
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-            min-width: 550px;
-        }
-
-        th, td {
-            padding: 13px;
-            text-align: left;
-            border-bottom: 1px solid #e5eaf0;
-        }
-
-        th {
-            color: #718096;
-            font-size: 13px;
-        }
-
-        .status {
-            font-weight: bold;
-        }
-
-        .status-passed {
-            color: #16865b;
-        }
-
-        .status-improvement {
-            color: #c17a20;
-        }
-
-        .footer {
-            text-align: center;
-            padding: 30px;
-            color: #8a98a9;
-        }
-
-        @media (max-width: 750px) {
-            .cards {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 450px) {
-            .cards {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#102a24">
+<title>BPM Tools | Biodiesel Plant Management</title>
+<style>
+:root{--bg:#f3f6f4;--surface:#fff;--ink:#172b25;--muted:#718078;--line:#e3eae5;--green:#176b4a;--green2:#e7f2eb;--nav:#102a24;--amber:#a76512;--red:#b33d35;--shadow:0 8px 28px rgba(19,48,36,.06)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Arial,sans-serif}
+button,input,select,textarea{font:inherit}button{cursor:pointer}.app{min-height:100vh;display:grid;grid-template-columns:250px 1fr}
+.sidebar{background:var(--nav);color:#eaf3ed;padding:24px 16px;display:flex;flex-direction:column;gap:24px}.brand{padding:0 10px}.brand-mark{width:38px;height:38px;border-radius:12px;background:#d7eadc;color:#14583c;display:grid;place-items:center;font-weight:900;font-size:19px}.brand h1{font-size:16px;margin:12px 0 2px;letter-spacing:.04em}.brand p{margin:0;color:#a9bdb2;font-size:11px}.nav-label{color:#8fa79a;font-size:10px;font-weight:700;letter-spacing:.12em;padding:0 10px;margin-bottom:7px}.nav{display:grid;gap:5px}.nav button{border:0;background:transparent;color:#c6d5cc;text-align:left;padding:11px 12px;border-radius:9px;display:flex;gap:11px;align-items:center}.nav button.active,.nav button:hover{background:#24483a;color:#fff}.nav .ico{width:18px;text-align:center;font-size:16px}.side-note{margin-top:auto;border:1px solid #355446;border-radius:12px;padding:12px;color:#bdd0c4;font-size:11px}.side-note strong{display:block;color:white;margin-bottom:4px}
+main{min-width:0}.topbar{height:72px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 30px;gap:16px}.crumb{color:var(--muted);font-size:12px}.top-actions{display:flex;align-items:center;gap:10px}.select,.field input,.field select,.field textarea{border:1px solid var(--line);border-radius:9px;padding:10px 12px;background:#fff;color:var(--ink);width:100%;outline:none}.select{width:auto;min-width:150px}.avatar{width:34px;height:34px;border-radius:50%;background:var(--green2);color:var(--green);display:grid;place-items:center;font-weight:700}
+.content{max-width:1400px;margin:0 auto;padding:28px 30px 50px}.page-head{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin-bottom:22px}.eyebrow{color:var(--green);font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}.page-head h2{font-size:25px;line-height:1.2;margin:6px 0}.page-head p{color:var(--muted);margin:0}.btn{border:1px solid var(--line);border-radius:9px;padding:10px 14px;background:#fff;color:var(--ink);font-weight:650}.btn.primary{background:var(--green);border-color:var(--green);color:#fff}.btn.small{padding:6px 9px;font-size:12px}.btn.danger{color:var(--red)}.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:17px;box-shadow:var(--shadow)}.metric-top{display:flex;justify-content:space-between;color:var(--muted);font-size:12px}.metric-icon{width:30px;height:30px;border-radius:9px;background:var(--green2);color:var(--green);display:grid;place-items:center}.metric{font-size:27px;font-weight:750;margin:10px 0 1px;letter-spacing:-.04em}.hint{color:var(--muted);font-size:11px}.grid2{display:grid;grid-template-columns:1.3fr 1fr;gap:16px}.section-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.section-title h3{margin:0;font-size:15px}.section-title span{font-size:11px;color:var(--muted)}.empty{padding:28px 12px;text-align:center;color:var(--muted);border:1px dashed #cfdad2;border-radius:10px}.empty b{display:block;color:var(--ink);margin-bottom:4px}.table-wrap{overflow:auto}table{border-collapse:collapse;width:100%;min-width:620px}th,td{text-align:left;padding:11px 10px;border-bottom:1px solid var(--line);font-size:12px;vertical-align:top}th{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}td strong{font-size:12px}.pill{display:inline-flex;padding:4px 8px;border-radius:20px;background:#edf2ee;color:#52645a;font-size:10px;font-weight:700}.pill.open{background:#fff1df;color:#9a5a0d}.pill.closed{background:#e5f3e9;color:#176b4a}.pill.critical{background:#fdebea;color:#a8322b}.list{display:grid;gap:10px}.list-item{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line)}.dot{width:8px;height:8px;border-radius:50%;background:#d18b2d;margin-top:5px;flex:none}.list-item b{display:block;font-size:12px}.list-item small{color:var(--muted);font-size:11px}.view{display:none}.view.active{display:block}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.field{display:grid;gap:5px}.field label{font-size:11px;font-weight:700;color:#53645a}.field.full{grid-column:1/-1}.field textarea{min-height:90px;resize:vertical}.form-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}.notice{padding:12px 14px;border-radius:10px;background:#fff7e9;border:1px solid #f1dfbf;color:#80531c;font-size:12px;margin-bottom:16px}.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}.toolbar input,.toolbar select{border:1px solid var(--line);border-radius:9px;padding:9px 11px;background:white}.toolbar input{min-width:220px}.footer{text-align:center;color:#89978f;font-size:11px;padding:24px}
+@media(max-width:950px){.app{grid-template-columns:205px 1fr}.cards{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}}
+@media(max-width:650px){.app{display:block}.sidebar{padding:12px;gap:12px}.brand{display:flex;align-items:center;gap:10px}.brand h1{margin:0}.brand p,.side-note,.nav-label{display:none}.nav{display:flex;overflow:auto}.nav button{white-space:nowrap;padding:9px}.topbar{height:auto;padding:12px 16px}.content{padding:20px 14px}.page-head{display:block}.page-head .btn{margin-top:14px}.cards{gap:9px}.card{padding:13px}.metric{font-size:23px}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}}
+</style>
 </head>
-
 <body>
-
-<header>
-    <h1>ALC Smart Learning</h1>
-    <p>Learning & Development Platform</p>
-</header>
-
-<main class="container">
-
-    <h2>DLP Assessment Dashboard</h2>
-    <p>Learning and competency performance overview</p>
-
-    <section class="cards">
-
-        <div class="card">
-            <h3>Total Participants</h3>
-            <div class="number" id="total">0</div>
-        </div>
-
-        <div class="card">
-            <h3>Passed</h3>
-            <div class="number passed" id="passed">0</div>
-        </div>
-
-        <div class="card">
-            <h3>Need Improvement</h3>
-            <div class="number improvement" id="improvement">0</div>
-        </div>
-
-        <div class="card">
-            <h3>Passing Rate</h3>
-            <div class="number" id="rate">0%</div>
-        </div>
-
-    </section>
-
-    <section class="card table-card">
-
-        <h2>Participant Assessment</h2>
-        <h3>Add New Participant</h3>
-
-<form id="participantForm">
-
-    <input
-        type="text"
-        id="newName"
-        placeholder="Participant name"
-        required
-    >
-
-    <select id="newDepartment" required>
-        <option value="">Select Department</option>
-        <option value="Biodiesel">Biodiesel</option>
-        <option value="Refinery">Refinery</option>
-        <option value="KCP">KCP</option>
-        <option value="Oleochemical">Oleochemical</option>
-    </select>
-
-    <input
-        type="number"
-        id="newScore"
-        placeholder="Score (0-100)"
-        min="0"
-        max="100"
-        required
-    >
-
-    <button type="submit">Add Participant</button>
-
-</form>
-
-
-        <select
-    id="departmentFilter"
-    style="padding:12px; margin:10px 0; border:1px solid #d9e2ec; border-radius:8px;"
->
-    <option value="">All Departments</option>
-    <option value="Biodiesel">Biodiesel</option>
-    <option value="Refinery">Refinery</option>
-    <option value="KCP">KCP</option>
-    <option value="Oleochemical">Oleochemical</option>
-</select>
-<input
-    type="text"
-    id="searchInput"
-    placeholder="Search participant name..."
-    style="width:100%; max-width:360px; padding:12px; margin:10px 0; border:1px solid #d9e2ec; border-radius:8px;"
->
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Department</th>
-                    <th>Score</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-
-            <tbody id="participantTable"></tbody>
-        </table>
-
-    </section>
-
-</main>
-
-<footer class="footer">
-    ALC Smart Learning | Learning & Development
-</footer>
-
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="brand-mark">B</div><div><h1>BPM TOOLS</h1><p>BIODIESEL PLANT MANAGEMENT</p></div></div>
+  <div><div class="nav-label">WORKSPACE</div><nav class="nav" id="navigation">
+    <button class="active" data-view="dashboard"><span class="ico">▦</span>Overview</button>
+    <button data-view="logbook"><span class="ico">▤</span>Shift Logbook</button>
+    <button data-view="abnormalities"><span class="ico">⚠</span>Abnormalities</button>
+    <button data-view="actions"><span class="ico">✓</span>Action Tracker</button>
+    <button data-view="process"><span class="ico">⌁</span>Process Notes</button>
+    <button data-view="people"><span class="ico">♙</span>People & Team</button>
+  </nav></div>
+  <div class="side-note"><strong>Prototype mode</strong>Data saat ini tersimpan di browser perangkat ini. Belum tersinkron ke D1 atau digunakan bersama tim.</div>
+</aside>
+<main>
+<header class="topbar"><div class="crumb">Operations / <strong id="breadcrumb">Overview</strong></div><div class="top-actions">
+<select class="select" id="plantSelect" aria-label="Pilih plant"><option value="Plant Existing">Plant Existing</option><option value="Plant Baru">Plant Baru</option></select>
+<div class="avatar" title="Personal workspace">R</div></div></header>
+<div class="content">
+<section class="view active" id="view-dashboard">
+ <div class="page-head"><div><div class="eyebrow">Operational command center</div><h2>Plant Overview</h2><p>Ringkasan aktivitas dan tindak lanjut operasional.</p></div><button class="btn primary" data-go="logbook">＋ Catat aktivitas</button></div>
+ <div class="notice"><strong>Catatan:</strong> Ini adalah fondasi prototype. Belum ada data produksi aktual yang dimasukkan. Jangan gunakan angka contoh sebagai dasar keputusan operasi.</div>
+ <div class="cards">
+  <div class="card"><div class="metric-top">Shift logs <span class="metric-icon">▤</span></div><div class="metric" id="metric-logs">0</div><div class="hint">Catatan pada plant terpilih</div></div>
+  <div class="card"><div class="metric-top">Open abnormalities <span class="metric-icon">⚠</span></div><div class="metric" id="metric-abn">0</div><div class="hint">Perlu investigasi / tindak lanjut</div></div>
+  <div class="card"><div class="metric-top">Open actions <span class="metric-icon">✓</span></div><div class="metric" id="metric-actions">0</div><div class="hint">Belum ditutup</div></div>
+  <div class="card"><div class="metric-top">Process notes <span class="metric-icon">⌁</span></div><div class="metric" id="metric-notes">0</div><div class="hint">Catatan teknis tersimpan</div></div>
+ </div>
+ <div class="grid2">
+  <div class="card"><div class="section-title"><h3>Recent shift logbook</h3><button class="btn small" data-go="logbook">Lihat semua</button></div><div id="recent-logs" class="empty"><b>Belum ada catatan</b>Mulai dengan mencatat aktivitas shift.</div></div>
+  <div class="card"><div class="section-title"><h3>Priority follow-up</h3><button class="btn small" data-go="actions">Buka tracker</button></div><div id="recent-actions" class="empty"><b>Belum ada action item</b>Action yang dibuat akan muncul di sini.</div></div>
+ </div>
+</section>
+<section class="view" id="view-logbook">
+ <div class="page-head"><div><div class="eyebrow">Daily operational control</div><h2>Shift Logbook</h2><p>Catat kejadian, kondisi proses, dan informasi handover setiap shift.</p></div><button class="btn primary" id="new-log">＋ Tambah log</button></div>
+ <div class="card"><div id="log-form-wrap" hidden><form id="log-form"><div class="form-grid">
+  <div class="field"><label for="log-date">Tanggal & waktu</label><input id="log-date" type="datetime-local" required></div>
+  <div class="field"><label for="log-shift">Shift</label><select id="log-shift"><option>Shift 1</option><option>Shift 2</option><option>Shift 3</option><option>Day Shift</option></select></div>
+  <div class="field"><label for="log-area">Area proses</label><input id="log-area" placeholder="Contoh: Transesterification" required></div>
+  <div class="field"><label for="log-type">Kategori</label><select id="log-type"><option>Production</option><option>Process</option><option>Equipment</option><option>Safety</option><option>Utility</option><option>Other</option></select></div>
+  <div class="field full"><label for="log-detail">Catatan aktivitas / kondisi</label><textarea id="log-detail" required placeholder="Tuliskan kondisi aktual, kejadian, parameter relevan, dan tindakan yang dilakukan."></textarea></div>
+  <div class="field full"><label for="log-handover">Handover / follow-up shift berikutnya</label><textarea id="log-handover" placeholder="Apa yang perlu diperhatikan shift selanjutnya?"></textarea></div>
+ </div><div class="form-actions"><button type="button" class="btn" id="cancel-log">Batal</button><button class="btn primary">Simpan log</button></div></form><hr style="border:0;border-top:1px solid var(--line);margin:18px 0"></div>
+ <div class="toolbar"><input id="log-search" placeholder="Cari area atau catatan..."><select id="log-shift-filter"><option value="">Semua shift</option><option>Shift 1</option><option>Shift 2</option><option>Shift 3</option><option>Day Shift</option></select></div>
+ <div class="table-wrap"><table><thead><tr><th>Waktu</th><th>Shift</th><th>Area</th><th>Kategori</th><th>Catatan</th><th>Handover</th></tr></thead><tbody id="log-rows"></tbody></table></div><div id="log-empty" class="empty">Belum ada shift log untuk plant ini.</div></div>
+</section>
+<section class="view" id="view-abnormalities">
+ <div class="page-head"><div><div class="eyebrow">Issue & investigation</div><h2>Abnormality Register</h2><p>Dokumentasikan kondisi abnormal, investigasi, dan status penyelesaiannya.</p></div><button class="btn primary" id="new-abn">＋ Catat abnormality</button></div>
+ <div class="card"><div id="abn-form-wrap" hidden><form id="abn-form"><div class="form-grid">
+  <div class="field"><label for="abn-date">Tanggal</label><input id="abn-date" type="date" required></div>
+  <div class="field"><label for="abn-severity">Severity awal</label><select id="abn-severity"><option>Low</option><option selected>Medium</option><option>High</option><option>Critical</option></select></div>
+  <div class="field"><label for="abn-area">Area / equipment</label><input id="abn-area" required placeholder="Area atau tag equipment"></div>
+  <div class="field"><label for="abn-owner">PIC</label><input id="abn-owner" placeholder="Nama PIC"></div>
+  <div class="field full"><label for="abn-description">Deskripsi kondisi abnormal</label><textarea id="abn-description" required placeholder="Kondisi aktual, parameter, dampak, waktu kejadian."></textarea></div>
+  <div class="field full"><label for="abn-investigation">Investigasi / tindakan sementara</label><textarea id="abn-investigation" placeholder="Temuan awal dan tindakan yang sudah dilakukan."></textarea></div>
+ </div><div class="form-actions"><button type="button" class="btn" id="cancel-abn">Batal</button><button class="btn primary">Simpan abnormality</button></div></form><hr style="border:0;border-top:1px solid var(--line);margin:18px 0"></div>
+ <div class="table-wrap"><table><thead><tr><th>Tanggal</th><th>Area</th><th>Severity</th><th>Deskripsi</th><th>PIC</th><th>Status</th><th>Action</th></tr></thead><tbody id="abn-rows"></tbody></table></div><div id="abn-empty" class="empty">Belum ada abnormality yang tercatat.</div></div>
+</section>
+<section class="view" id="view-actions">
+ <div class="page-head"><div><div class="eyebrow">Execution & accountability</div><h2>Action Tracker</h2><p>Pastikan setiap temuan memiliki PIC, due date, dan status.</p></div><button class="btn primary" id="new-action">＋ Tambah action</button></div>
+ <div class="card"><div id="action-form-wrap" hidden><form id="action-form"><div class="form-grid">
+  <div class="field full"><label for="act-title">Action item</label><input id="act-title" required placeholder="Tindakan yang harus diselesaikan"></div>
+  <div class="field"><label for="act-owner">PIC</label><input id="act-owner" required placeholder="Nama PIC"></div>
+  <div class="field"><label for="act-due">Target penyelesaian</label><input id="act-due" type="date" required></div>
+  <div class="field"><label for="act-priority">Prioritas</label><select id="act-priority"><option>Normal</option><option>High</option><option>Urgent</option></select></div>
+  <div class="field"><label for="act-source">Sumber</label><select id="act-source"><option>Daily operation</option><option>Abnormality</option><option>Maintenance</option><option>Safety</option><option>Other</option></select></div>
+ </div><div class="form-actions"><button type="button" class="btn" id="cancel-action">Batal</button><button class="btn primary">Simpan action</button></div></form><hr style="border:0;border-top:1px solid var(--line);margin:18px 0"></div>
+ <div class="table-wrap"><table><thead><tr><th>Action item</th><th>PIC</th><th>Due date</th><th>Priority</th><th>Source</th><th>Status</th><th>Action</th></tr></thead><tbody id="action-rows"></tbody></table></div><div id="action-empty" class="empty">Belum ada action item.</div></div>
+</section>
+<section class="view" id="view-process">
+ <div class="page-head"><div><div class="eyebrow">Technical knowledge base</div><h2>Process Notes</h2><p>Simpan catatan teknis dan lesson learned yang sudah diverifikasi.</p></div><button class="btn primary" id="new-note">＋ Tambah catatan</button></div>
+ <div class="notice">Gunakan modul ini untuk referensi dan catatan. Parameter operasi, batas alarm, set point, serta instruksi perubahan proses wajib mengacu pada SOP dan otorisasi resmi plant.</div>
+ <div class="card"><div id="note-form-wrap" hidden><form id="note-form"><div class="form-grid">
+  <div class="field"><label for="note-title">Judul</label><input id="note-title" required></div>
+  <div class="field"><label for="note-area">Area proses</label><input id="note-area" required></div>
+  <div class="field full"><label for="note-content">Catatan teknis / lesson learned</label><textarea id="note-content" required></textarea></div>
+  <div class="field full"><label for="note-reference">Referensi / dokumen pendukung</label><input id="note-reference" placeholder="Nomor SOP, dokumen, atau sumber validasi"></div>
+ </div><div class="form-actions"><button type="button" class="btn" id="cancel-note">Batal</button><button class="btn primary">Simpan catatan</button></div></form><hr style="border:0;border-top:1px solid var(--line);margin:18px 0"></div>
+ <div id="note-list" class="list"></div><div id="note-empty" class="empty">Belum ada catatan teknis.</div></div>
+</section>
+<section class="view" id="view-people">
+ <div class="page-head"><div><div class="eyebrow">Team & capability</div><h2>People & Team</h2><p>Ruang pengembangan untuk manpower, peran, dan kompetensi operator.</p></div></div>
+ <div class="notice">Modul people saat ini masih berupa rancangan. Data personal dan penilaian kompetensi tim akan ditambahkan setelah kebutuhan akses, privasi, serta struktur organisasi disepakati.</div>
+ <div class="grid2"><div class="card"><h3>Rencana fitur</h3><div class="list"><div class="list-item"><span class="dot"></span><div><b>Manpower & shift coverage</b><small>Struktur tim, jadwal, dan kebutuhan manpower.</small></div></div><div class="list-item"><span class="dot"></span><div><b>Operator competency matrix</b><small>Kompetensi per area, level, dan bukti asesmen.</small></div></div><div class="list-item"><span class="dot"></span><div><b>Coaching & development</b><small>Rencana pengembangan dan tindak lanjut.</small></div></div></div></div><div class="card"><h3>Prinsip desain</h3><p style="color:var(--muted)">Akses berbasis peran, pencatatan yang dapat diaudit, dan pemisahan data antar-plant. Penilaian kinerja tidak akan dibuat terbuka untuk semua pengguna.</p></div></div>
+</section>
+</div><footer class="footer">BPM Tools · Prototype v0.1 · Local browser storage only</footer>
+</main></div>
 <script>
-
-
-// 1. Sample participant data
-const sampleParticipants = [
-    { name: "Andi", department: "Biodiesel", score: 85 },
-    { name: "Budi", department: "Refinery", score: 75 },
-    { name: "Citra", department: "KCP", score: 90 },
-    { name: "Deni", department: "Oleochemical", score: 70 },
-    { name: "Eka", department: "Biodiesel", score: 88 },
-    { name: "Fajar", department: "Refinery", score: 65 },
-    { name: "Gita", department: "KCP", score: 82 },
-    { name: "Hana", department: "Oleochemical", score: 95 }
-];
-
-// 2. Load saved data from browser
-let participants = JSON.parse(
-    localStorage.getItem("alcParticipants")
-) || sampleParticipants;
-
-// 2. Set passing score
-const passingScore = 80;
-// Save participant data to browser
-function saveParticipants() {
-    localStorage.setItem(
-        "alcParticipants",
-        JSON.stringify(participants)
-    );
-}
-// 3. Connect to participant table
-const table = document.getElementById("participantTable");
-
-// 4. Update dashboard numbers
-function updateDashboard() {
-    const total = participants.length;
-
-    const passed = participants.filter(
-        person => person.score >= passingScore
-    ).length;
-
-    const improvement = total - passed;
-
-    const rate = total === 0 ? 0 : (passed / total) * 100;
-
-    document.getElementById("total").textContent = total;
-    document.getElementById("passed").textContent = passed;
-    document.getElementById("improvement").textContent = improvement;
-    document.getElementById("rate").textContent = rate.toFixed(1) + "%";
-}
-
-// 5. Display participant table
-function renderParticipants() {
-    table.innerHTML = "";
-
-    participants.forEach((person, index) => {
-        const row = document.createElement("tr");
-
-        const nameCell = document.createElement("td");
-        nameCell.textContent = person.name;
-
-        const departmentCell = document.createElement("td");
-        departmentCell.textContent = person.department;
-
-        const scoreCell = document.createElement("td");
-        scoreCell.textContent = person.score;
-
-        const statusCell = document.createElement("td");
-        const isPassed = person.score >= passingScore;
-
-        statusCell.textContent = isPassed
-            ? "Passed"
-            : "Need Improvement";
-
-        statusCell.className = isPassed
-            ? "status status-passed"
-            : "status status-improvement";
-
-        // Action column
-        const actionCell = document.createElement("td");
-
-        // Edit button
-        const editButton = document.createElement("button");
-        editButton.textContent = "Edit";
-
-        editButton.addEventListener("click", function() {
-            const newName = prompt("Enter participant name:", person.name);
-
-            if (newName === null) return;
-
-            const newDepartment = prompt(
-                "Enter department (Biodiesel, Refinery, KCP, Oleochemical):",
-                person.department
-            );
-
-            if (newDepartment === null) return;
-
-            const scoreText = prompt(
-                "Enter score (0-100):",
-                String(person.score)
-            );
-
-            if (scoreText === null) return;
-
-            const newScore = Number(scoreText);
-            const allowedDepartments = [
-                "Biodiesel",
-                "Refinery",
-                "KCP",
-                "Oleochemical"
-            ];
-
-            if (
-                newName.trim() === "" ||
-                !allowedDepartments.includes(newDepartment) ||
-                scoreText.trim() === "" ||
-                !Number.isFinite(newScore) ||
-                newScore < 0 ||
-                newScore > 100
-            ) {
-                alert("Invalid data. Please try again.");
-                return;
-            }
-
-            participants[index] = {
-                name: newName.trim(),
-                department: newDepartment,
-                score: newScore
-            };
-saveParticipants();
-            renderParticipants();
-            updateDashboard();
-            filterParticipants();
-
-            alert("Participant updated successfully!");
-        });
-
-        // Delete button
-        const deleteButton = document.createElement("button");
-        deleteButton.textContent = "Delete";
-
-        deleteButton.addEventListener("click", function() {
-            const confirmation = confirm(
-                "Are you sure you want to delete " + person.name + "?"
-            );
-
-            if (confirmation) {
-                participants.splice(index, 1);
-saveParticipants();
-                renderParticipants();
-                updateDashboard();
-                filterParticipants();
-
-                alert("Participant deleted successfully!");
-            }
-        });
-
-        actionCell.appendChild(editButton);
-        actionCell.appendChild(deleteButton);
-
-        row.appendChild(nameCell);
-        row.appendChild(departmentCell);
-        row.appendChild(scoreCell);
-        row.appendChild(statusCell);
-        row.appendChild(actionCell);
-
-        table.appendChild(row);
-    });
-}
-// 6. Search and filter participants
-
-const searchInput = document.getElementById("searchInput");
-const departmentFilter = document.getElementById("departmentFilter");
-
-function filterParticipants() {
-
-    const keyword = searchInput.value.toLowerCase();
-    const selectedDepartment = departmentFilter.value;
-
-    const rows = table.querySelectorAll("tr");
-
-    rows.forEach(row => {
-
-        const name = row.cells[0].textContent.toLowerCase();
-        const department = row.cells[1].textContent;
-
-        const matchesName = name.includes(keyword);
-
-        const matchesDepartment =
-            selectedDepartment === "" ||
-            department === selectedDepartment;
-
-        if (matchesName && matchesDepartment) {
-            row.style.display = "";
-        } else {
-            row.style.display = "none";
-        }
-
-    });
-}
-
-searchInput.addEventListener("input", filterParticipants);
-
-departmentFilter.addEventListener("change", filterParticipants);
-    
-renderParticipants();
-updateDashboard();
-
-
-// 7. Add new participant
-
-const participantForm = document.getElementById("participantForm");
-
-participantForm.addEventListener("submit", function(event) {
-
-    event.preventDefault();
-
-    const name = document.getElementById("newName").value.trim();
-    const department = document.getElementById("newDepartment").value;
-    const scoreText = document.getElementById("newScore").value;
-    const score = Number(scoreText);
-
-    if (
-        name === "" ||
-        department === "" ||
-        scoreText.trim() === "" ||
-        !Number.isFinite(score) ||
-        score < 0 ||
-        score > 100
-    ) {
-        alert("Please enter valid participant data.");
-        return;
-    }
-
-    const newParticipant = {
-        name: name,
-        department: department,
-        score: score
-    };
-
-    participants.push(newParticipant);
-saveParticipants();
-    // Refresh table and dashboard
-    renderParticipants();
-    updateDashboard();
-    filterParticipants();
-
-    participantForm.reset();
-
-    alert("Participant added successfully!");
-
-});
-
+const STORE='bpmToolsPrototypeV1';
+const state=JSON.parse(localStorage.getItem(STORE)||'{}');
+const db=state.data||{};
+const plantSelect=document.getElementById('plantSelect');
+plantSelect.value=state.plant||'Plant Existing';
+let currentView='dashboard';
+function bucket(name){const p=plantSelect.value;db[p]=db[p]||{};db[p][name]=db[p][name]||[];return db[p][name]}
+function save(){localStorage.setItem(STORE,JSON.stringify({plant:plantSelect.value,data:db}));renderAll()}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function dateText(s){if(!s)return '—';const d=new Date(s);return isNaN(d)?s:d.toLocaleString('id-ID',{dateStyle:'medium',timeStyle:s.includes('T')?'short':undefined})}
+function go(view){currentView=view;document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id==='view-'+view));document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.view===view));document.getElementById('breadcrumb').textContent=({dashboard:'Overview',logbook:'Shift Logbook',abnormalities:'Abnormalities',actions:'Action Tracker',process:'Process Notes',people:'People & Team'})[view];renderAll()}
+document.getElementById('navigation').addEventListener('click',e=>{const b=e.target.closest('button[data-view]');if(b)go(b.dataset.view)});
+document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
+plantSelect.addEventListener('change',save);
+function showForm(id,show=true){document.getElementById(id).hidden=!show}
+function setupForm(openId,cancelId,wrapId,formId,handler){document.getElementById(openId).onclick=()=>showForm(wrapId);document.getElementById(cancelId).onclick=()=>{document.getElementById(formId).reset();showForm(wrapId,false)};document.getElementById(formId).onsubmit=e=>{e.preventDefault();handler();e.target.reset();showForm(wrapId,false)}}
+setupForm('new-log','cancel-log','log-form-wrap','log-form',()=>{bucket('logs').unshift({id:crypto.randomUUID(),date:document.getElementById('log-date').value,shift:document.getElementById('log-shift').value,area:document.getElementById('log-area').value,type:document.getElementById('log-type').value,detail:document.getElementById('log-detail').value,handover:document.getElementById('log-handover').value});save()});
+setupForm('new-abn','cancel-abn','abn-form-wrap','abn-form',()=>{bucket('abnormalities').unshift({id:crypto.randomUUID(),date:document.getElementById('abn-date').value,severity:document.getElementById('abn-severity').value,area:document.getElementById('abn-area').value,owner:document.getElementById('abn-owner').value,description:document.getElementById('abn-description').value,investigation:document.getElementById('abn-investigation').value,status:'Open'});save()});
+setupForm('new-action','cancel-action','action-form-wrap','action-form',()=>{bucket('actions').unshift({id:crypto.randomUUID(),title:document.getElementById('act-title').value,owner:document.getElementById('act-owner').value,due:document.getElementById('act-due').value,priority:document.getElementById('act-priority').value,source:document.getElementById('act-source').value,status:'Open'});save()});
+setupForm('new-note','cancel-note','note-form-wrap','note-form',()=>{bucket('notes').unshift({id:crypto.randomUUID(),title:document.getElementById('note-title').value,area:document.getElementById('note-area').value,content:document.getElementById('note-content').value,reference:document.getElementById('note-reference').value,date:new Date().toISOString()});save()});
+function renderLogs(){const rows=bucket('logs');const q=(document.getElementById('log-search').value||'').toLowerCase(),shift=document.getElementById('log-shift-filter').value;const filtered=rows.filter(x=>(!shift||x.shift===shift)&&[x.area,x.detail,x.handover].join(' ').toLowerCase().includes(q));document.getElementById('log-rows').innerHTML=filtered.map(x=>'<tr><td>'+esc(dateText(x.date))+'</td><td>'+esc(x.shift)+'</td><td><strong>'+esc(x.area)+'</strong></td><td>'+esc(x.type)+'</td><td>'+esc(x.detail)+'</td><td>'+esc(x.handover||'—')+'</td></tr>').join('');document.getElementById('log-empty').hidden=filtered.length>0}
+document.getElementById('log-search').addEventListener('input',renderLogs);document.getElementById('log-shift-filter').addEventListener('change',renderLogs);
+function renderAbn(){const rows=bucket('abnormalities');document.getElementById('abn-rows').innerHTML=rows.map(x=>'<tr><td>'+esc(dateText(x.date))+'</td><td>'+esc(x.area)+'</td><td><span class="pill '+(x.severity==='Critical'||x.severity==='High'?'critical':'')+'">'+esc(x.severity)+'</span></td><td>'+esc(x.description)+'</td><td>'+esc(x.owner||'—')+'</td><td><span class="pill '+(x.status==='Closed'?'closed':'open')+'">'+esc(x.status)+'</span></td><td><button class="btn small" data-abn="'+esc(x.id)+'">'+(x.status==='Open'?'Close':'Reopen')+'</button></td></tr>').join('');document.getElementById('abn-empty').hidden=rows.length>0}
+document.getElementById('abn-rows').addEventListener('click',e=>{const b=e.target.closest('[data-abn]');if(!b)return;const x=bucket('abnormalities').find(x=>x.id===b.dataset.abn);if(x){x.status=x.status==='Open'?'Closed':'Open';save()}});
+function renderActions(){const rows=bucket('actions');document.getElementById('action-rows').innerHTML=rows.map(x=>'<tr><td><strong>'+esc(x.title)+'</strong></td><td>'+esc(x.owner)+'</td><td>'+esc(dateText(x.due))+'</td><td><span class="pill '+(x.priority==='Urgent'?'critical':x.priority==='High'?'open':'')+'">'+esc(x.priority)+'</span></td><td>'+esc(x.source)+'</td><td><span class="pill '+(x.status==='Closed'?'closed':'open')+'">'+esc(x.status)+'</span></td><td><button class="btn small" data-action="'+esc(x.id)+'">'+(x.status==='Open'?'Complete':'Reopen')+'</button></td></tr>').join('');document.getElementById('action-empty').hidden=rows.length>0}
+document.getElementById('action-rows').addEventListener('click',e=>{const b=e.target.closest('[data-action]');if(!b)return;const x=bucket('actions').find(x=>x.id===b.dataset.action);if(x){x.status=x.status==='Open'?'Closed':'Open';save()}});
+function renderNotes(){const rows=bucket('notes');document.getElementById('note-list').innerHTML=rows.map(x=>'<div class="list-item"><span class="dot" style="background:#176b4a"></span><div><b>'+esc(x.title)+' · '+esc(x.area)+'</b><small>'+esc(dateText(x.date))+' · '+esc(x.reference||'No reference')+'</small><p style="margin:6px 0 0;font-size:12px">'+esc(x.content)+'</p></div></div>').join('');document.getElementById('note-empty').hidden=rows.length>0}
+function renderDashboard(){const logs=bucket('logs'),abn=bucket('abnormalities'),acts=bucket('actions'),notes=bucket('notes');document.getElementById('metric-logs').textContent=logs.length;document.getElementById('metric-abn').textContent=abn.filter(x=>x.status==='Open').length;document.getElementById('metric-actions').textContent=acts.filter(x=>x.status==='Open').length;document.getElementById('metric-notes').textContent=notes.length;const recent=logs.slice(0,4);document.getElementById('recent-logs').className=recent.length?'list':'empty';document.getElementById('recent-logs').innerHTML=recent.length?recent.map(x=>'<div class="list-item"><span class="dot"></span><div><b>'+esc(x.area)+' · '+esc(x.shift)+'</b><small>'+esc(dateText(x.date))+' — '+esc(x.detail)+'</small></div></div>').join(''):'<b>Belum ada catatan</b>Mulai dengan mencatat aktivitas shift.';const open=acts.filter(x=>x.status==='Open').slice(0,4);document.getElementById('recent-actions').className=open.length?'list':'empty';document.getElementById('recent-actions').innerHTML=open.length?open.map(x=>'<div class="list-item"><span class="dot"></span><div><b>'+esc(x.title)+'</b><small>'+esc(x.owner)+' · Due '+esc(dateText(x.due))+'</small></div></div>').join(''):'<b>Belum ada action item</b>Action yang dibuat akan muncul di sini.'}
+function renderAll(){renderDashboard();renderLogs();renderAbn();renderActions();renderNotes()}
+document.getElementById('log-date').value=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,16);document.getElementById('abn-date').value=new Date().toISOString().slice(0,10);renderAll();
 </script>
-
 </body>
 </html>
